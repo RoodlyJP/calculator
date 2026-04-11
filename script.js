@@ -66,7 +66,7 @@ function updateButton(e) {
                 number1 = operate(operator, number1, number2);
                 number2 = "";
                 operator = null;
-                screen.textContent = (operator == null)? number1 : number2;
+                screen.textContent = number1;
             }
             default: break;
         }
