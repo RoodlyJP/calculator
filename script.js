@@ -22,6 +22,8 @@ let operator = null;
 let screen = document.querySelector("#screen-text");
 
 function operate(chosenOperator, chosenNumber1, chosenNumber2) {
+    chosenNumber1 = Number(chosenNumber1);
+    chosenNumber2 = Number(chosenNumber2);
     switch(chosenOperator) {
         case "+": return add(chosenNumber1, chosenNumber2);
         case "-": return substract(chosenNumber1, chosenNumber2);
@@ -30,7 +32,7 @@ function operate(chosenOperator, chosenNumber1, chosenNumber2) {
     }
 }
 
-function updateNumber(e) {
+function updateButton(e) {
     let numb = e.target.textContent
         switch(numb) {
             case "0":
@@ -48,13 +50,28 @@ function updateNumber(e) {
                 } else {
                     number2 = number2 + numb;
                 }
+                console.log(number1 + " " + number2)
                 screen.textContent = (operator == null)? number1 : number2;
             };
                 break;
+            case "+": operator = "+";
+                break;
+            case "-": operator = "-";
+                break;
+            case "x": operator = "*";
+                break;
+            case "\u00F7": operator = "/";
+                break;
+            case "=": {
+                number1 = operate(operator, number1, number2);
+                number2 = "";
+                operator = null;
+                screen.textContent = (operator == null)? number1 : number2;
+            }
             default: break;
         }
 }
 
 
-let buttons = document.querySelector(".numbers");
-buttons.addEventListener("click", updateNumber);
+let buttons = document.querySelector(".buttons");
+buttons.addEventListener("click", updateButton);
