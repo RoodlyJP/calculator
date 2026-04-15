@@ -19,6 +19,7 @@ let number1 = "";
 let number2 = "";
 let operator = null;
 let isEqualPressed = false;
+const MINUS = "-"
 
 let screen = document.querySelector("#screen-text");
 
@@ -41,11 +42,47 @@ function clear() {
     number2 = "";
     operator = null;
 }
+function changeSign(number = "") {
+    if(number.includes(MINUS)) {
+        number = number.replace("-", "");
+    } else {
+        number = MINUS + number;
+    }
+    return number;
+}
+
+function handleOperator(newOperator) {
+    if(number1 != "" && number2 != "" && !isEqualPressed) {
+        number1 = operate(operator, number1, number2);
+        updateScreen(number1);
+        number2 = "";
+        operator = newOperator;
+    } else {
+        operator = newOperator;
+        number2 = "";
+        isEqualPressed = false;
+    }
+}
 
 function updateButton(e) {
     let numb = e.target.textContent
         switch(numb) {
-            case ".":
+            case ".": {
+                if(!isEqualPressed) {
+                    if(operator == null) {
+                        if(!number1.includes(".")) {
+                            number1 = number1 + ".";
+                            updateScreen(number1);
+                        }
+                    } else {
+                        if(!number2.includes(".")) {
+                            number2 = number2 + ".";
+                            updateScreen(number2);
+                        }
+                    }
+                }
+            }
+                break;
             case "0":
             case "1":
             case "2":
@@ -72,56 +109,32 @@ function updateButton(e) {
                 }
             };
                 break;
-            case "+": {
-                if(number1 != "" && number2 != "" && !isEqualPressed) {
-                    number1 = operate(operator, number1, number2);
-                    updateScreen(number1);
-                    number2 = "";
-                    operator = "+";
-                } else {
-                    operator = "+";
-                    number2 = "";
-                    isEqualPressed = false;
+            case "+/-": {
+                if(!isEqualPressed) {
+                    if(operator == null) {
+                        number1 = changeSign(number1);
+                        updateScreen(number1);
+                    } else {
+                        number2 = changeSign(number2);
+                        updateScreen(number2);
+                    }
                 }
+            }
+                break;
+            case "+": {
+                handleOperator("+");
             }
                 break;
             case "-": {
-                if(number1 != "" && number2 != "" && !isEqualPressed) {
-                    number1 = operate(operator, number1, number2);
-                    updateScreen(number1);
-                    number2 = "";
-                    operator = "-";
-                } else {
-                    operator = "-";
-                    number2 = "";
-                    isEqualPressed = false;
-                }
+                handleOperator("-");
             }
                 break;
             case "x": {
-                if(number1 != "" && number2 != "" && !isEqualPressed) {
-                    number1 = operate(operator, number1, number2);
-                    updateScreen(number1);
-                    number2 = "";
-                    operator = "*";
-                } else {
-                    operator = "*";
-                    number2 = "";
-                    isEqualPressed = false;
-                }
+                handleOperator("*");
             }
                 break;
             case "\u00F7": {
-                if(number1 != "" && number2 != "" && !isEqualPressed) {
-                    number1 = operate(operator, number1, number2);
-                    updateScreen(number1);
-                    number2 = "";
-                    operator = "/";
-                } else {
-                    operator = "/";
-                    number2 = "";
-                    isEqualPressed = false;
-                }
+                handleOperator("/");
             }
                 break;
             case "=": {
@@ -129,7 +142,6 @@ function updateButton(e) {
                     if(operator == "/" && number2 == "0") {
                         updateScreen("ERROR");
                         clear();
-                        
                     } else {
                         number1 = operate(operator, number1, number2);
                         updateScreen(number1);
