@@ -64,9 +64,8 @@ function handleOperator(newOperator) {
     }
 }
 
-function updateButton(e) {
-    let numb = e.target.textContent
-        switch(numb) {
+function updateButton(userInput) {
+        switch(userInput) {
             case ".": {
                 if(!isEqualPressed) {
                     if(operator == null) {
@@ -95,15 +94,15 @@ function updateButton(e) {
             case "9": {
                 if(isEqualPressed) {
                     clear();
-                    number1 = number1 + numb;
+                    number1 = number1 + userInput;
                     updateScreen(number1);
                     isEqualPressed = false;
                 } else {
                     if(operator == null) {
-                        number1 = number1 + numb;
+                        number1 = number1 + userInput;
                         updateScreen(number1);
                     } else {
-                        number2 = number2 + numb;
+                        number2 = number2 + userInput;
                         updateScreen(number2);
                     }
                 }
@@ -161,4 +160,9 @@ function updateButton(e) {
 
 
 let buttons = document.querySelector(".buttons");
-buttons.addEventListener("click", updateButton);
+buttons.addEventListener("click", (e) => {
+    updateButton(e.target.textContent);
+});
+window.addEventListener("keyup", (e) => {
+    updateButton(e.key);
+});
