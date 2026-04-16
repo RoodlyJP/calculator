@@ -5,7 +5,8 @@ body{
 }
 #container{
     background-color: lightgray;
-    width: 400px;
+    width: 95%;
+    max-width: 500px;
     height: 70vh;
     border: 1px solid black;
     border-radius: 2rem;
